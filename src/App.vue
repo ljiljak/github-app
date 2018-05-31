@@ -12,6 +12,8 @@
 <script>
 import AppToolbar from './components/AppToolbar.vue'
 import AppSearch from './components/AppSearch.vue'
+import { gitHub } from './services/GitHub.js'
+
 
 
   export default{
@@ -23,10 +25,27 @@ import AppSearch from './components/AppSearch.vue'
 
     data() {
       return {
-        title: 'My app'
-
+        query: ''
       };
+    },
+
+    methods: {
+    getRepos: function () {
+      gitHub.getRepos(this.query)
+        .then(response => {
+          console.log(response)
+        })
+      }
+    },
+
+    watch: {
+      query() {
+        this.getRepos()
+      }
     }
+
     
+
+
   };
 </script>

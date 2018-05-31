@@ -13,6 +13,7 @@
 import AppToolbar from './components/AppToolbar.vue'
 import AppSearch from './components/AppSearch.vue'
 import { gitHub } from './services/GitHub.js'
+import debounce from 'lodash/debounce'
 
 
 
@@ -25,17 +26,19 @@ import { gitHub } from './services/GitHub.js'
 
     data() {
       return {
-        query: ''
+        query: '',
+        repos: []
       };
     },
 
     methods: {
-    getRepos: function () {
+    getRepos: debounce(function () {
       gitHub.getRepos(this.query)
         .then(response => {
-          console.log(response)
+          this.repos = response.data
+          //console.log(response)
         })
-      }
+      }, 500)
     },
 
     watch: {

@@ -1,7 +1,7 @@
 <template>
 	<v-ons-page>
 		<div class="content">
-      		<v-ons-search-input 
+      		<v-ons-search-input
       		:placeholder="placeholder"
       		:value="query"
       		@input="$emit('update:query', $event.target.value)">

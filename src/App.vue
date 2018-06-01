@@ -7,7 +7,7 @@
         placeholder="Search">
      </AppSearch>
 
-      <v-ons-list>
+      <v-ons-list v-if="!isLoading">
       <v-ons-list-header>Repositories of {{query}}</v-ons-list-header>
       <v-ons-list-item v-for="repo in repos">
         <div class="left">
@@ -18,6 +18,19 @@
         </div>
       </v-ons-list-item>
     </v-ons-list>
+
+    
+      
+      <p v-if="isLoading">
+        <v-ons-progress-circular indeterminate></v-ons-progress-circular>
+      </p>
+
+
+ 
+
+
+
+
   </div>
 
     </v-ons-page>
@@ -41,25 +54,30 @@ import debounce from 'lodash/debounce'
     data() {
       return {
         query: '',
-        repos: []
+        repos: [],
+        isLoading: false
       };
     },
 
     methods: {
     getRepos: debounce(function () {
+      
       gitHub.getRepos(this.query)
         .then(response => {
           if (this.repos = !null) {
             this.repos = response.data
+            this.isLoading = false
           }
-          return
           //console.log(response)
+        }).catch(()=> {
+          this.isLoading = false
         })
       }, 500)
     },
 
     watch: {
       query() {
+        this.isLoading = true
         this.getRepos()
       }
     }
